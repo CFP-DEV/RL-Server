@@ -13,14 +13,17 @@ router.get('/', (req, res) => {
 // @route   GET register
 // @desc    Show registration page
 // @access  Public
-router.get('/register', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public', 'register.html'));
-});
+// router.get('/register', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../public', 'register.html'));
+// });
 
 // @route   POST register
 // @desc    Register user
 // @access  Public
 router.post('/register', (req, res) => {
+  //*** Validation goes here
+
+
   const errors = {};
   // Check if email already exists
   User.findOne({ email: req.body.email }).then(user => {
