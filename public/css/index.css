@@ -1,0 +1,11 @@
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  max-width: 550px;
+  height: 125px;
+}
+
+input, button {
+  padding: 5px 10px;
+}
