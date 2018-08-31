@@ -4,6 +4,7 @@ const edge = require('edge.js');
 const path = require('path');
 const passport = require('passport');
 const User = require('../lib/models/User');
+const bcrypt = require('bcrypt');
 
 // Home
 router.get('/', (req, res) => {
@@ -22,7 +23,6 @@ router.get('/', (req, res) => {
 // @access  Public
 router.post('/register', (req, res) => {
   //*** Validation goes here
-
 
   const errors = {};
   // Check if email already exists
@@ -43,10 +43,19 @@ router.post('/register', (req, res) => {
             email: req.body.email,
             password: req.body.password
           });
-          newUser
-            .save()
-            .then(user => res.json(user))
-            .catch(err => console.log(err));
+
+          // Hash password
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
+              if (err) throw err;
+              newUser.password = hash;
+              // Save User to DB
+              newUser
+                .save()
+                .then(user => res.json(user))
+                .catch(err => console.log(err));
+            });
+          });
         }
       });
     }
