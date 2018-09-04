@@ -2,9 +2,6 @@ const express = require('express');
 const router = express.Router();
 const edge = require('edge.js');
 const path = require('path');
-const passport = require('passport');
-const User = require('../lib/models/User');
-const bcrypt = require('bcrypt');
 
 // Home
 router.get('/', (req, res) => {
@@ -17,49 +14,5 @@ router.get('/', (req, res) => {
 // router.get('/register', (req, res) => {
 //   res.sendFile(path.join(__dirname, '../public', 'register.html'));
 // });
-
-// @route   POST register
-// @desc    Register user
-// @access  Public
-router.post('/register', (req, res) => {
-  //*** Validation goes here
-
-  const errors = {};
-  // Check if email already exists
-  User.findOne({ email: req.body.email }).then(user => {
-    if (user) {
-      errors.email = 'Email already exists';
-      res.status(400).json(errors);
-    } else {
-      // Check if username already taken
-      User.findOne({ name: req.body.username }).then(user => {
-        if (user) {
-          errors.name = 'Choose another username';
-          res.status(400).json(errors);
-        } else {
-          // If no errors, create a new user
-          const newUser = new User({
-            name: req.body.username,
-            email: req.body.email,
-            password: req.body.password
-          });
-
-          // Hash password
-          bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(newUser.password, salt, (err, hash) => {
-              if (err) throw err;
-              newUser.password = hash;
-              // Save User to DB
-              newUser
-                .save()
-                .then(user => res.json(user))
-                .catch(err => console.log(err));
-            });
-          });
-        }
-      });
-    }
-  });
-});
 
 module.exports = router;

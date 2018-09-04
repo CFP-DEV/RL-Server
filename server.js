@@ -6,6 +6,7 @@ const edge = require('edge.js');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const db = require('./config/keys').mongoURI;
+const authController = require('./lib/controllers/AuthController');
 
 // Static Files (Public)
 app.use(express.static('./public'));
@@ -24,6 +25,7 @@ edge.registerViews(path.join(__dirname, './resources/views'));
 
 // Router
 app.use('/', require('./routes/routes.js'));
+app.use('/', authController);
 
 // Listen
 app.listen(process.env.PORT, () => {
