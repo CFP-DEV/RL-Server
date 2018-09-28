@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const db = require('./config/keys').mongoURI;
 const authController = require('./lib/controllers/AuthController');
 const userController = require('./lib/controllers/UserController');
+const passport = require('passport');
 
 // Static Files (Public)
 app.use(express.static('./public'));
@@ -20,6 +21,11 @@ mongoose
   .connect(db,  { useNewUrlParser: true } )
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
+
+
+// Passport middleware
+app.use(passport.initialize());
+require('./config/passport')(passport);
 
 // Template Engine
 edge.registerViews(path.join(__dirname, './resources/views'));
