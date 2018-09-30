@@ -28,7 +28,7 @@ edge.registerViews(path.join(__dirname, './resources/views'));
 // Router
 app.use('/', require('./routes/routes.js'));
 app.use('/', authController);
-app.use('/', levelsController);
+app.use('/api/levels', levelsController);
 app.use('/api/users', userController);
 
 // Listen
