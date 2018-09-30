@@ -14,6 +14,7 @@ const levelsController = require('./lib/controllers/LevelsController');
 app.use(express.static('./public'));
 
 // Body parser
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Connect to MongoDB
